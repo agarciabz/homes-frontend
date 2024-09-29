@@ -1,8 +1,23 @@
-import { Text, Title, useMantineColorScheme } from "@mantine/core";
+import { Text, Title } from "@mantine/core";
+import { API } from "../utils/consts";
+import Table from "../components/Table";
 
 const Home = () => {
-  const { setColorScheme } = useMantineColorScheme();
-  setColorScheme('auto')
+  let homes;
+  fetch(`${API}/search`, {
+    method: "POST",
+    body: JSON.stringify({ amount: 10 }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+    .then((res) => {
+      res.json().then((json) => {
+        console.log(json);
+        homes = json.data;
+      });
+    })
+    .catch(console.error);
 
   return (
     <>
@@ -10,6 +25,7 @@ const Home = () => {
         Spotahome
       </Title>
       <Text>Lorem ipsum</Text>
+      <Table homes={homes} />
     </>
   );
 };
