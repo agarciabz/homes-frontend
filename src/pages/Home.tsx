@@ -1,5 +1,5 @@
 import { Title } from "@mantine/core";
-import HomesTable from "../components/Table";
+import HomesTable from "../components/Table/Table";
 import { useQuery } from "@tanstack/react-query";
 import { mapResponse, responseIsError, searchHomes } from "../api/homes";
 

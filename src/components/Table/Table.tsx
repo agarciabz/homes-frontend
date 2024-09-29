@@ -1,5 +1,5 @@
 import { Table } from "@mantine/core";
-import { Home } from "../api/homes";
+import { Home } from "../../api/homes";
 import styles from "./Table.module.css";
 
 interface TableProps {
