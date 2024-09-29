@@ -1,31 +1,25 @@
-import { Text, Title } from "@mantine/core";
-import { API } from "../utils/consts";
-import Table from "../components/Table";
+import { Title } from "@mantine/core";
+import HomesTable from "../components/Table";
+import { useQuery } from "@tanstack/react-query";
+import { mapResponse, responseIsError, searchHomes } from "../api/homes";
 
 const Home = () => {
-  let homes;
-  fetch(`${API}/search`, {
-    method: "POST",
-    body: JSON.stringify({ amount: 10 }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((res) => {
-      res.json().then((json) => {
-        console.log(json);
-        homes = json.data;
-      });
-    })
-    .catch(console.error);
+  const amount = 10;
+  const { data: queryRes, isLoading } = useQuery({
+    queryKey: ["search", amount],
+    queryFn: () => searchHomes(amount),
+  });
+
+  const homesData =
+    queryRes &&
+    (responseIsError(queryRes) ? undefined : queryRes.data.map(mapResponse));
 
   return (
     <>
       <Title ta="center" mt={100}>
         Spotahome
       </Title>
-      <Text>Lorem ipsum</Text>
-      <Table homes={homes} />
+      <HomesTable homes={homesData} isLoading={isLoading} />
     </>
   );
 };
